@@ -1,25 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import UserList from './components/Userlist';
+import UserDetails from './components/Userdetails';
+import {
+  Container,
+  CssBaseline,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 
-function App() {
+const App = () => {
+  const [selectedUser, setSelectedUser] = useState(null);
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+
+  const handleSelectUser = (user) => {
+    setSelectedUser(user);
+  };
+
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Container component="main" maxWidth="lg">
+      <CssBaseline />
+      <Grid container spacing={2} style={{ marginTop: '5px' }}>
+        <Grid item xs={12} sm={6}>
+          <Typography variant="h5" gutterBottom>
+            Users List
+          </Typography>
+          <UserList onSelectUser={handleSelectUser} />
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          style={{
+            position: isSmallScreen ? 'static' : 'fixed',
+            bottom: isSmallScreen ? 'auto' : isMediumScreen ? '50px' : '630px',
+            right: isSmallScreen ? 'auto' : '400px',
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Typography variant="h5" gutterBottom>
+            User Details
+          </Typography>
+
+          <UserDetails selectedUser={selectedUser} />
+        </Grid>
+      </Grid>
+    </Container>
   );
-}
+};
 
 export default App;
